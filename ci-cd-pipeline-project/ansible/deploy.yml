@@ -5,7 +5,7 @@
   tasks:
 
     - name: Install Nginx
-      dnf:
+      package:
         name: nginx
         state: present
 
