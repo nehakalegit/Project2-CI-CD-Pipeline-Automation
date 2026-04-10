@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        // ✅ NEW: Get EC2 IP
+        // ✅ Get EC2 IP
         stage('Get IP') {
             steps {
                 script {
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        // ✅ NEW: Create inventory dynamically
+        // ✅ Create dynamic inventory
         stage('Create Inventory') {
             steps {
                 sh """
@@ -68,16 +68,25 @@ pipeline {
             }
         }
 
-        stage('Deploy Ansible') {
-    steps {
-        sshagent(['keypair']) {
-            sh """
-            export ANSIBLE_HOST_KEY_CHECKING=False
-            cd ci-cd-pipeline-project/ansible
-            ansible-playbook -i ../../inventory.ini deploy.yml
-            """
+        // ✅ NEW: Wait for EC2 to be ready
+        stage('Wait for Instance') {
+            steps {
+                sh 'echo "Waiting for EC2 to initialize..."'
+                sh 'sleep 60'
+            }
         }
-    }
-}
+
+        // ✅ Deploy Ansible
+        stage('Deploy Ansible') {
+            steps {
+                sshagent(['keypair']) {
+                    sh """
+                    export ANSIBLE_HOST_KEY_CHECKING=False
+                    cd ci-cd-pipeline-project/ansible
+                    ansible-playbook -i ../../inventory.ini deploy.yml
+                    """
+                }
+            }
+        }
     }
 }
