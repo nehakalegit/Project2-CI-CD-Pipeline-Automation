@@ -4,6 +4,16 @@
 
   tasks:
 
+    - name: Wait for system to be ready (simple sleep)
+      pause:
+        seconds: 30
+
+    - name: Wait for yum lock to be released
+      shell: |
+        while fuser /var/run/yum.pid >/dev/null 2>&1; do
+          sleep 5
+        done
+
     - name: Install Nginx
       yum:
         name: nginx
