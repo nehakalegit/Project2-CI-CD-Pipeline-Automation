@@ -68,17 +68,16 @@ pipeline {
             }
         }
 
-        // ✅ Updated Ansible stage
         stage('Deploy Ansible') {
-            steps {
-                sshagent(['keypair']) {
-                    sh """
-                    cd ci-cd-pipeline-project/ansible
-                    ansible-playbook -i ../../inventory.ini deploy.yml
-                    """
-                }
-            }
+    steps {
+        sshagent(['keypair']) {
+            sh """
+            export ANSIBLE_HOST_KEY_CHECKING=False
+            cd ci-cd-pipeline-project/ansible
+            ansible-playbook -i ../../inventory.ini deploy.yml
+            """
         }
-
+    }
+}
     }
 }
