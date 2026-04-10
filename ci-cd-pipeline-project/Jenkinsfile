@@ -1,13 +1,27 @@
 pipeline {
     agent any
 
+    environment {
+        AWS_DEFAULT_REGION = "us-east-1"
+    }
+
     stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/nehakalegit/Project2-CI-CD-Pipeline-Automation.git'
+            }
+        }
 
         stage('Terraform Init') {
             steps {
-                withAWS(credentials: 'aws-creds') {
+                withCredentials([
+                    string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
                     sh '''
                     cd ci-cd-pipeline-project/terraform
+                    terraform version
                     terraform init
                     '''
                 }
@@ -16,7 +30,10 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                withAWS(credentials: 'aws-creds') {
+                withCredentials([
+                    string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
                     sh '''
                     cd ci-cd-pipeline-project/terraform
                     terraform plan
@@ -27,7 +44,10 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                withAWS(credentials: 'aws-creds') {
+                withCredentials([
+                    string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
                     sh '''
                     cd ci-cd-pipeline-project/terraform
                     terraform apply -auto-approve
