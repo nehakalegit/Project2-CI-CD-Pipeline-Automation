@@ -5,7 +5,7 @@
   tasks:
 
     - name: Install Nginx
-      dnf:
+      yum:
         name: nginx
         state: present
 
