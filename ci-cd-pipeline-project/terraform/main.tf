@@ -32,7 +32,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.ssh_sg.id]
 
   tags = {
-    Name = "ci/cd_project"
+    Name = "JenkinsCI/CD"
   }
 }
 
