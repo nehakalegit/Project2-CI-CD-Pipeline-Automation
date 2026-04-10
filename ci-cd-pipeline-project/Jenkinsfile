@@ -13,6 +13,12 @@ pipeline {
             }
         }
 
+        stage('Show Workspace (DEBUG)') {
+            steps {
+                sh 'ls -R $WORKSPACE'
+            }
+        }
+
         stage('Terraform Init') {
             steps {
                 withCredentials([
@@ -20,8 +26,7 @@ pipeline {
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
-                    cd ci-cd-pipeline-project/terraform
-                    terraform version
+                    cd $WORKSPACE/ci-cd-pipeline-project/terraform
                     terraform init
                     '''
                 }
@@ -35,7 +40,7 @@ pipeline {
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
-                    cd ci-cd-pipeline-project/terraform
+                    cd $WORKSPACE/ci-cd-pipeline-project/terraform
                     terraform plan
                     '''
                 }
@@ -49,7 +54,7 @@ pipeline {
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
-                    cd ci-cd-pipeline-project/terraform
+                    cd $WORKSPACE/ci-cd-pipeline-project/terraform
                     terraform apply -auto-approve
                     '''
                 }
@@ -59,7 +64,7 @@ pipeline {
         stage('Deploy using Ansible') {
             steps {
                 sh '''
-                cd ci-cd-pipeline-project/ansible
+                cd $WORKSPACE/ci-cd-pipeline-project/ansible
                 ansible-playbook -i inventory.ini deploy.yml
                 '''
             }
