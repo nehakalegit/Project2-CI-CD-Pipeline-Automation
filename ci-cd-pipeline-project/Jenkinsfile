@@ -6,7 +6,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 sh '''
-                cd terraform
+                cd ci-cd-pipeline-project/terraform
                 terraform init
                 '''
             }
@@ -15,7 +15,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 sh '''
-                cd terraform
+                cd ci-cd-pipeline-project/terraform
                 terraform plan
                 '''
             }
@@ -24,7 +24,7 @@ pipeline {
         stage('Terraform Apply') {
             steps {
                 sh '''
-                cd terraform
+                cd ci-cd-pipeline-project/terraform
                 terraform apply -auto-approve
                 '''
             }
@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy using Ansible') {
             steps {
                 sh '''
-                cd ansible
+                cd ci-cd-pipeline-project/ansible
                 ansible-playbook -i inventory.ini deploy.yml
                 '''
             }
