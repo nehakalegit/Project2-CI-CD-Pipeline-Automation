@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "ap-south-1"
+  region = "us-east-1"
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-0f5ee92e2d63afc18"
+  ami           = "ami-0c02fb55956c7d316"
   instance_type = "t2.micro"
-  key_name      = "keypairvirginia.pem"
+  key_name      = "your-key"
 
   tags = {
     Name = "CI-CD-Server"
