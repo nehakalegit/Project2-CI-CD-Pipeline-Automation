@@ -5,28 +5,34 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                sh '''
-                cd ci-cd-pipeline-project/terraform
-                terraform init
-                '''
+                withAWS(credentials: 'aws-creds') {
+                    sh '''
+                    cd ci-cd-pipeline-project/terraform
+                    terraform init
+                    '''
+                }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                sh '''
-                cd ci-cd-pipeline-project/terraform
-                terraform plan
-                '''
+                withAWS(credentials: 'aws-creds') {
+                    sh '''
+                    cd ci-cd-pipeline-project/terraform
+                    terraform plan
+                    '''
+                }
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                sh '''
-                cd ci-cd-pipeline-project/terraform
-                terraform apply -auto-approve
-                '''
+                withAWS(credentials: 'aws-creds') {
+                    sh '''
+                    cd ci-cd-pipeline-project/terraform
+                    terraform apply -auto-approve
+                    '''
+                }
             }
         }
 
