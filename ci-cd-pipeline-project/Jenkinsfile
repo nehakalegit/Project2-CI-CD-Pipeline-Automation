@@ -3,32 +3,39 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
+        stage('Terraform Init') {
             steps {
-                git 'https://github.com/nehakalegit/Project2-CI-CD-Pipeline-Automation.git'
+                sh '''
+                cd terraform
+                terraform init
+                '''
             }
         }
 
-        stage('Verify App') {
+        stage('Terraform Plan') {
             steps {
-                sh 'ls -la app/'
+                sh '''
+                cd terraform
+                terraform plan
+                '''
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                dir('terraform') {
-                    sh 'terraform init'
-                    sh 'terraform apply -auto-approve'
-                }
+                sh '''
+                cd terraform
+                terraform apply -auto-approve
+                '''
             }
         }
 
         stage('Deploy using Ansible') {
             steps {
-                dir('ansible') {
-                    sh 'ansible-playbook -i inventory.ini deploy.yml'
-                }
+                sh '''
+                cd ansible
+                ansible-playbook -i inventory.ini deploy.yml
+                '''
             }
         }
     }
