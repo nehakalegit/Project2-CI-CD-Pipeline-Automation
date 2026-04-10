@@ -1,5 +1,5 @@
 # Project2-CI-CD-Pipeline-Automation
-# 🚀 CI/CD Pipeline Automation Project (No Build Tool)
+# 🚀 CI/CD Pipeline Automation Project
 
 ## 📌 Overview
 This project demonstrates a simple CI/CD pipeline using Jenkins, Terraform, and Ansible to deploy a static web application on AWS.
