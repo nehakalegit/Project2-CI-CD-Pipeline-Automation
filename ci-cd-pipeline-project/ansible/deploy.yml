@@ -19,3 +19,4 @@
       copy:
         src: ../app/index.html
         dest: /usr/share/nginx/html/index.html
+         mode: '0644'
