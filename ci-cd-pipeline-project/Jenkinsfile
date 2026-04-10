@@ -5,10 +5,11 @@ pipeline {
         AWS_DEFAULT_REGION = "us-east-1"
     }
 
+    stages {
 
-        stage('Show Workspace (DEBUG)') {
+        stage('Show Workspace') {
             steps {
-                sh 'ls -R $WORKSPACE'
+                sh 'ls -R'
             }
         }
 
@@ -19,7 +20,7 @@ pipeline {
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
-                    cd $WORKSPACE/ci-cd-pipeline-project/terraform
+                    cd ci-cd-pipeline-project/terraform
                     terraform init
                     '''
                 }
@@ -33,7 +34,7 @@ pipeline {
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
-                    cd $WORKSPACE/ci-cd-pipeline-project/terraform
+                    cd ci-cd-pipeline-project/terraform
                     terraform plan
                     '''
                 }
@@ -47,17 +48,17 @@ pipeline {
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
-                    cd $WORKSPACE/ci-cd-pipeline-project/terraform
+                    cd ci-cd-pipeline-project/terraform
                     terraform apply -auto-approve
                     '''
                 }
             }
         }
 
-        stage('Deploy using Ansible') {
+        stage('Deploy Ansible') {
             steps {
                 sh '''
-                cd $WORKSPACE/ci-cd-pipeline-project/ansible
+                cd ci-cd-pipeline-project/ansible
                 ansible-playbook -i inventory.ini deploy.yml
                 '''
             }
