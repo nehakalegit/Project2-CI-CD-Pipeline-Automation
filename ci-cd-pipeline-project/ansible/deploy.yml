@@ -4,22 +4,33 @@
 
   tasks:
 
-    - name: Wait for system to be ready (simple sleep)
+    - name: Wait for system to be ready
       pause:
         seconds: 30
 
-    - name: Wait for yum lock to be released
+    - name: Wait for yum lock
       shell: |
-        while fuser /var/run/yum.pid >/dev/null 2>&1; do
+        while sudo fuser /var/run/yum.pid >/dev/null 2>&1; do
+          echo "Waiting for yum lock..."
           sleep 5
         done
+      changed_when: false
 
-    - name: Install Nginx
+    - name: Update yum packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Enable nginx repo (Amazon Linux)
+      command: amazon-linux-extras enable nginx1
+      ignore_errors: yes
+
+    - name: Install nginx
       yum:
         name: nginx
         state: present
 
-    - name: Start Nginx
+    - name: Start nginx
       service:
         name: nginx
         state: started
