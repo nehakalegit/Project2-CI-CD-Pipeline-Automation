@@ -5,7 +5,7 @@
   tasks:
 
     - name: Install Nginx
-      package:
+      dnf:
         name: nginx
         state: present
 
@@ -19,4 +19,4 @@
       copy:
         src: ../app/index.html
         dest: /usr/share/nginx/html/index.html
-         mode: '0644'
+        mode: '0644'
