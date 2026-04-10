@@ -45,14 +45,15 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy Ansible') {
-            steps {
-                sh '''
-                cd ci-cd-pipeline-project/ansible
-                ansible-playbook -i inventory.ini deploy.yml
-                '''
-            }
+stage('Deploy Ansible') {
+    steps {
+        sshagent(['keypair']) {
+            sh '''
+            cd ci-cd-pipeline-project/ansible
+            ansible-playbook -i inventory.ini deploy.yml
+            '''
         }
     }
+}
+    
 }
