@@ -5,16 +5,27 @@ provider "aws" {
 # Security Group
 resource "aws_security_group" "ssh_sg" {
   name        = "ssh-sg"
-  description = "Allow SSH access"
+  description = "Allow SSH and HTTP access"
 
+  # ✅ SSH
   ingress {
     description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]   # for testing only
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # ✅ HTTP (ADD THIS)
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # ✅ Outbound
   egress {
     from_port   = 0
     to_port     = 0
