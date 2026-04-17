@@ -24,7 +24,21 @@ resource "aws_security_group" "ssh_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+# Jenkins
+ingress {
+  from_port   = 8080
+  to_port     = 8080
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
 
+# SonarQube
+ingress {
+  from_port   = 9000
+  to_port     = 9000
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
   # ✅ Outbound
   egress {
     from_port   = 0
